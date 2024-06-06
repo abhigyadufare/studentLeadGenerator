@@ -1,3 +1,5 @@
+// const {auth, onCaptchaVerify, onSignInSubmit, verifyCode} = require("./controller/phoneAuth.js");
+
 document.addEventListener('DOMContentLoaded', () => {
   // setTimeout(initializeForm, 4000); 
   // createFormButton(); 
@@ -100,7 +102,7 @@ logoAndContactContainer.appendChild(contactElement);
         { placeholder: "Student's Name:*", inputType: 'text', inputId: 'studentName', inputName: 'studentName', required: true },
         { placeholder: "Guardian Name:*", inputType: 'text', inputId: 'guardianName', inputName: 'guardianName', required: true },
         { placeholder: 'Contact No.:', inputType: 'tel', inputId: 'contactNo', inputName: 'contactNo', required: true },
-        { placeholder: 'OTP:', inputType: 'tel', inputId: 'contactNo', inputName: 'contactNo', required: true },
+        { placeholder: 'OTP:', inputType: 'tel', inputId: 'contactOtp', inputName: 'contactOtp', required: true },
         { placeholder: 'E-mail:', inputType: 'email', inputId: 'email', inputName: 'email', required: true },
         // { placeholder: 'OTP:', inputType: 'tel', inputId: 'contactNo', inputName: 'contactNo', required: true },
         { placeholder:'Whatsapp No.:', inputType: 'tel', inputId: 'whatsappNo', inputName: 'whatsappNo', required: false },
@@ -271,15 +273,44 @@ function createField(form, field) {
 }
 
 
+
   function getUrlParameter(name) {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(name);
   }
 
-  const utmData = {
-    source: getUrlParameter('utm_source') ? getUrlParameter('utm_source') : window.location.hostname,
-    sourceId: getUrlParameter('campaign_id') ? getUrlParameter('capaign_id') : window.location.href
-  };
+  // const utmData = {
+  //   source: getUrlParameter('utm_source') ? getUrlParameter('utm_source') : window.location.hostname,
+  //   sourceId: getUrlParameter('campaign_id') ? getUrlParameter('capaign_id') : window.location.href
+  // };
+  const source = getUrlParameter('utm_source') !== null ? getUrlParameter('utm_source') : window.location.hostname;
+  const sourceId = getUrlParameter('campaign_id') !== null ? getUrlParameter('campaign_id') : window.location.href;
+
+  const mobileOtp = document.getElementById('contactOtp');
+
+
+// mobileOtp.addEventListener('input', function() {
+
+//   const inputValue = this.value;
+
+//   if (inputValue.length === 6) {
+
+//     // Call the function when 6 numbers are typed
+
+//     myFunction();
+
+//   }
+
+// });
+
+
+// function myFunction() {
+
+//   console.log('6 numbers typed!');
+
+//   // Add your code here
+
+// }
 
   function submitForm(event) {
     event.preventDefault(); 
@@ -295,10 +326,10 @@ function createField(form, field) {
         courseSelection: document.getElementById('courseSelection').value,
         neetScore: document.getElementById('neetScore').value,
         neetAir: document.getElementById('neetAir').value,
-        preferredCollege: document.getElementById('preferredCollege') ? document.getElementById('prefferedCollege').value : "",
+        preferredCollege: document.getElementById('preferredCollege') ? document.getElementById('prefferedCollege').value : source,
         agreeCheckbox: document.getElementById('agreeCheckbox').checked,
-        source: utmData.source,
-        sourceId: utmData.sourceId
+        source: source,
+        sourceId: sourceId
     };
   
   
@@ -333,7 +364,7 @@ const sendData = async (formData) => {
       neetScore: formData.neetScore,
       source: formData.source,
       sourceId: formData.sourceId,
-      preffredCollege: formData.preffredCollege
+      preffredCollege: formData.preferredCollege
     }
 
     try {
